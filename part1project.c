@@ -6,18 +6,22 @@ int main(int argc, char *argv[])
     if(argc!=2)
     {
         perror("nu");
-        return -1;
+        return 1;
     }
    DIR *dir;
    dir=opendir(argv[1]);
-   struct dirent *readdir(dir);
-   if(dir!=NULL)
+   if(dir==NULL)
    {
-    while(dirent!=NULL)
-    {
-        printf("%s",dirent->d_name);
-    }
+    return 1;
+    perror("nu");
+
    }
+   struct dirent *en;
+   while((en=readdir(dir))!=NULL)
+
+    {
+        printf("%s",en->d_name);
+    }
    closedir(dir);
 }
 
