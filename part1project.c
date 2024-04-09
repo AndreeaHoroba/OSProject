@@ -3,14 +3,16 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/stat.h>
+#include<time.h>
 
 #define MAX_FILES 1000 // Maximum number of files in the directory
+#define PATH_MAX 1000
 
 // Struct to store file information
 typedef struct {
     char *name;
     time_t last_modified;
-    off_t size;
+    int size;
 } FileInfo;
 
 // Function to compare two file information structs by name
@@ -24,13 +26,15 @@ int main(int argc, char *argv[]) {
         printf("Usage: %s <directory_path>\n", argv[0]);
         return 1;
     }
-
+DIR *dir;
     // Open the directory
-    DIR *dir = opendir(argv[1]);
+    for(int i=1;i<argc;i++){
+     dir= opendir(argv[i]);
     if (dir == NULL) {
         perror("Unable to open directory");
         return 1;
     }
+    
 
     // Read the directory and store file information in an array
     struct dirent *entry;
@@ -89,7 +93,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-
+    
     // Close the directory
     closedir(dir);
 
@@ -97,6 +101,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < num_files; i++) {
         free(files[i].name);
     }
-
+    }
     return 0;
 }
